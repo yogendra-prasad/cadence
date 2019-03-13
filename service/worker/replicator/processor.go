@@ -495,7 +495,7 @@ Loop:
 		historyAfterReset := req.History.Events
 		firstEvent := historyAfterReset[0]
 		dattr := firstEvent.DecisionTaskFailedEventAttributes
-		req.WorkflowExecution.RunId = dattr.BaseRunId
+		req.WorkflowExecution.RunId = dattr.NewRunId
 	}
 RetryLoop:
 	for i := 0; i < p.config.ReplicatorHistoryBufferRetryCount(); i++ {
