@@ -368,29 +368,31 @@ func (c *historyRereplicationContext) sendReplicationRawRequest(request *history
 func (c *historyRereplicationContext) handleEmptyHistory(domainID string, workfloID string, runID string,
 	replicationInfo map[string]*shared.ReplicationInfo) error {
 
-	ri, ok := replicationInfo[c.rereplicator.targetClusterName]
-	var firstEventID int64
-	if !ok {
-		firstEventID = common.FirstEventID
-	} else {
-		firstEventID = ri.GetLastEventId() + 1
-	}
-	_, err := c.sendSingleWorkflowHistory(
-		domainID,
-		workfloID,
-		runID,
-		firstEventID,
-		common.EndEventID,
-	)
-	if err != nil {
-		c.rereplicator.logger.WithFields(bark.Fields{
-			logging.TagDomainID:            domainID,
-			logging.TagWorkflowExecutionID: workfloID,
-			logging.TagWorkflowRunID:       runID,
-			logging.TagErr:                 err,
-		}).Error("error sending history")
-	}
-	return err
+	return nil
+	//
+	//ri, ok := replicationInfo[c.rereplicator.targetClusterName]
+	//var firstEventID int64
+	//if !ok {
+	//	firstEventID = common.FirstEventID
+	//} else {
+	//	firstEventID = ri.GetLastEventId() + 1
+	//}
+	//_, err := c.sendSingleWorkflowHistory(
+	//	domainID,
+	//	workfloID,
+	//	runID,
+	//	firstEventID,
+	//	common.EndEventID,
+	//)
+	//if err != nil {
+	//	c.rereplicator.logger.WithFields(bark.Fields{
+	//		logging.TagDomainID:            domainID,
+	//		logging.TagWorkflowExecutionID: workfloID,
+	//		logging.TagWorkflowRunID:       runID,
+	//		logging.TagErr:                 err,
+	//	}).Error("error sending history")
+	//}
+	//return err
 }
 
 func (c *historyRereplicationContext) getHistory(domainID string, workflowID string, runID string,
@@ -452,6 +454,10 @@ func (c *historyRereplicationContext) getPrevRunID(domainID string, workflowID s
 			logging.TagWorkflowRunID:       runID,
 			logging.TagFirstEventID:        common.FirstEventID,
 			logging.TagNextEventID:         common.EndEventID,
+			"begining-run-id":              c.beginingRunID,
+			"begining-first-event-id":      c.beginingFirstEventID,
+			"ending-run-id":                c.endingRunID,
+			"ending-next-event-id":         c.endingNextEventID,
 		}).Error("encounter empty history in get prev run ID")
 		return "", nil
 	}
