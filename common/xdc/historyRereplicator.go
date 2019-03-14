@@ -445,6 +445,16 @@ func (c *historyRereplicationContext) getPrevRunID(domainID string, workflowID s
 		// EntityNotExistsError error, set the run ID to "" indicating no prev run
 		return "", nil
 	}
+	if len(response.HistoryBatches) == 0 {
+		c.rereplicator.logger.WithFields(bark.Fields{
+			logging.TagDomainID:            domainID,
+			logging.TagWorkflowExecutionID: workflowID,
+			logging.TagWorkflowRunID:       runID,
+			logging.TagFirstEventID:        common.FirstEventID,
+			logging.TagNextEventID:         common.EndEventID,
+		}).Error("encounter empty history in get prev run ID")
+		return "", nil
+	}
 
 	blob := response.HistoryBatches[0]
 	historyEvents, err := c.deserializeBlob(blob)
