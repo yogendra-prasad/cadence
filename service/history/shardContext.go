@@ -600,6 +600,10 @@ func (s *shardContextImpl) ResetWorkflowExecution(request *persistence.ResetWork
 	if err != nil {
 		return err
 	}
+	err = s.allocateTransferIDsLocked(request.CurrReplicationTasks, &transferMaxReadLevel)
+	if err != nil {
+		return err
+	}
 	err = s.allocateTransferIDsLocked(request.CurrTransferTasks, &transferMaxReadLevel)
 	if err != nil {
 		return err
