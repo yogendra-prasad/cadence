@@ -523,7 +523,7 @@ func (t *timerQueueStandbyProcessorImpl) fetchHistoryAndVerifyOnce(timerTask *pe
 
 func (t *timerQueueStandbyProcessorImpl) fetchHistoryFromRemote(timerTask *persistence.TimerTaskInfo, nextEventID int64) (retError error) {
 
-	if t.shard.GetConfig().EnableDCMigration() {
+	if t.shard.GetConfig().EnableDCMigration() && t.shard.GetConfig().EnableDCMigrationHistoryReset() {
 		doDCMigration, err := canDoDCMigration(t.shard.GetService().GetClusterMetadata(), t.shard.GetDomainCache(), timerTask.DomainID)
 		if err != nil {
 			return err

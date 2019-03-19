@@ -92,6 +92,7 @@ var keys = map[Key]string{
 	// history settings
 	// TODO remove after DC migration is over
 	EnableDCMigration:                                     "history.enableDCMigration",
+	EnableDCMigrationHistoryReset:                         "history.enableDCMigrationHistoryReset",
 	HistoryRPS:                                            "history.rps",
 	HistoryPersistenceMaxQPS:                              "history.persistenceMaxQPS",
 	HistoryVisibilityOpenMaxQPS:                           "history.historyVisibilityOpenMaxQPS",
@@ -274,6 +275,9 @@ const (
 	// EnableDCMigration whether DC migration is enabled or not
 	// TODO remove after DC migration is over
 	EnableDCMigration
+	// EnableDCMigrationHistoryReset
+	// TODO remove after DC migration is over
+	EnableDCMigrationHistoryReset
 	// HistoryRPS is request rate per second for each history host
 	HistoryRPS
 	// HistoryPersistenceMaxQPS is the max qps history host can query DB

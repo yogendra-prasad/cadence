@@ -23,6 +23,8 @@ package history
 import (
 	goctx "context"
 
+	"time"
+
 	"github.com/uber-common/bark"
 	workflow "github.com/uber/cadence/.gen/go/shared"
 	"github.com/uber/cadence/client/matching"
@@ -32,7 +34,6 @@ import (
 	"github.com/uber/cadence/common/metrics"
 	"github.com/uber/cadence/common/persistence"
 	"github.com/uber/cadence/common/xdc"
-	"time"
 )
 
 type (
@@ -504,7 +505,7 @@ func (t *transferQueueStandbyProcessorImpl) fetchHistoryAndVerifyOnce(transferTa
 
 func (t *transferQueueStandbyProcessorImpl) fetchHistoryFromRemote(transferTask *persistence.TransferTaskInfo, nextEventID int64) (retError error) {
 
-	if t.shard.GetConfig().EnableDCMigration() {
+	if t.shard.GetConfig().EnableDCMigration() && t.shard.GetConfig().EnableDCMigrationHistoryReset() {
 		doDCMigration, err := canDoDCMigration(t.shard.GetService().GetClusterMetadata(), t.shard.GetDomainCache(), transferTask.DomainID)
 		if err != nil {
 			return err

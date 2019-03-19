@@ -39,6 +39,7 @@ type Config struct {
 
 	// TODO remove after DC migration is over
 	EnableDCMigration               dynamicconfig.BoolPropertyFn
+	EnableDCMigrationHistoryReset   dynamicconfig.BoolPropertyFn
 	RPS                             dynamicconfig.IntPropertyFn
 	MaxIDLengthLimit                dynamicconfig.IntPropertyFn
 	PersistenceMaxQPS               dynamicconfig.IntPropertyFn
@@ -149,6 +150,7 @@ func NewConfig(dc *dynamicconfig.Collection, numberOfShards int, enableVisibilit
 		NumberOfShards: numberOfShards,
 		// TODO remove after DC migration is over
 		EnableDCMigration:                                     dc.GetBoolProperty(dynamicconfig.EnableDCMigration, false),
+		EnableDCMigrationHistoryReset:                         dc.GetBoolProperty(dynamicconfig.EnableDCMigrationHistoryReset, false),
 		RPS:                                                   dc.GetIntProperty(dynamicconfig.HistoryRPS, 3000),
 		MaxIDLengthLimit:                                      dc.GetIntProperty(dynamicconfig.MaxIDLengthLimit, 1000),
 		PersistenceMaxQPS:                                     dc.GetIntProperty(dynamicconfig.HistoryPersistenceMaxQPS, 9000),
