@@ -22,13 +22,13 @@ package frontend
 
 import (
 	"context"
+	"strconv"
 	"sync"
 	"sync/atomic"
 	"time"
 
-	"strconv"
-
 	"github.com/pborman/uuid"
+	"github.com/uber-go/tally"
 	"github.com/uber/cadence/.gen/go/admin"
 	"github.com/uber/cadence/.gen/go/admin/adminserviceserver"
 	h "github.com/uber/cadence/.gen/go/history"
@@ -329,7 +329,7 @@ func (adh *AdminHandler) GetWorkflowExecutionRawHistory(
 }
 
 // startRequestProfile initiates recording of request metrics
-func (adh *AdminHandler) startRequestProfile(scope int) metrics.Stopwatch {
+func (adh *AdminHandler) startRequestProfile(scope int) tally.Stopwatch {
 	adh.startWG.Wait()
 	sw := adh.metricsClient.StartTimer(scope, metrics.CadenceLatency)
 	adh.metricsClient.IncCounter(scope, metrics.CadenceRequests)
